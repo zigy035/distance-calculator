@@ -34,7 +34,6 @@ public class PostcodeCoordinateClient {
     public ValidatableResponse put(String postcode, BigDecimal latitude, BigDecimal longitude,
                                    final int port, String authHeader) {
         final JsonObjectBuilder builder = Json.createObjectBuilder();
-        builder.add("postcode", postcode);
         builder.add("latitude", latitude);
         builder.add("longitude", longitude);
 
@@ -43,7 +42,7 @@ public class PostcodeCoordinateClient {
                 .when().contentType(ContentType.JSON)
                 .header(new Header(HttpHeaders.AUTHORIZATION, authHeader))
                 .body(builder.build().toString())
-                .put("/api/postcode-coordinate")
+                .put("/api/postcode-coordinate/" + postcode)
                 .then();
     }
 
