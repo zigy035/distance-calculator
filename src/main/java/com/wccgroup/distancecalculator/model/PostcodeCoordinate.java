@@ -4,6 +4,7 @@ import static com.wccgroup.distancecalculator.common.AppConstants.UK_POSTCODE_RE
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -25,8 +26,10 @@ public class PostcodeCoordinate {
     private String postcode;
 
     @NotNull
+    @Column(precision = 9, scale = 6)
     private BigDecimal latitude;
 
     @NotNull
+    @Column(precision = 9, scale = 6)
     private BigDecimal longitude;
 }

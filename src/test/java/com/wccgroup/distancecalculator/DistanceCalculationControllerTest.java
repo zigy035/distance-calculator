@@ -1,7 +1,8 @@
 package com.wccgroup.distancecalculator;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import com.wccgroup.distancecalculator.client.PostcodeCoordinateClient;
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,21 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.wccgroup.distancecalculator.client.PostcodeCoordinateClient;
-
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.restassured.response.ValidatableResponse;
+import static com.wccgroup.distancecalculator.common.TestConstants.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(value = "classpath:application-test.properties")
 public class DistanceCalculationControllerTest {
-
-	private static final String USER_AUTHORIZATION = "Basic dXNlcjp1c2Vy";
 
 	@LocalServerPort
 	private int port;
@@ -40,6 +36,8 @@ public class DistanceCalculationControllerTest {
 	}
 
 	@Test
+	@Sql(scripts = INIT_DATA_SCRIPT, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+	@Sql(scripts = CLEANUP_DATA_SCRIPT, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 	public void testRequestDistanceCalculationAndReturnOK() {
 		final String postcodeFrom = "AB10 1XG";
 		final String postcodeTo = "AB21 0AL";
@@ -54,6 +52,8 @@ public class DistanceCalculationControllerTest {
 	}
 
 	@Test
+	@Sql(scripts = INIT_DATA_SCRIPT, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+	@Sql(scripts = CLEANUP_DATA_SCRIPT, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 	public void testRequestDistanceCalculationAndReturnUnauthorized() {
 		final String postcodeFrom = "AB10 1XG";
 		final String postcodeTo = "AB21 0AL";
@@ -65,6 +65,8 @@ public class DistanceCalculationControllerTest {
 	}
 
 	@Test
+	@Sql(scripts = INIT_DATA_SCRIPT, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+	@Sql(scripts = CLEANUP_DATA_SCRIPT, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 	public void testRequestDistanceCalculationAndReturnBadRequest() {
 		final String postcodeFrom = "AB101XG";
 		final String postcodeTo = "AB21 0AL";
@@ -76,6 +78,8 @@ public class DistanceCalculationControllerTest {
 	}
 
 	@Test
+	@Sql(scripts = INIT_DATA_SCRIPT, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+	@Sql(scripts = CLEANUP_DATA_SCRIPT, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 	public void testRequestDistanceCalculationAndReturnNotFound() {
 		final String postcodeFrom = "ABCD EFG";
 		final String postcodeTo = "AB21 0AL";
