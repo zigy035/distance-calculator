@@ -8,7 +8,7 @@ Under project root directory:
 * Under `application.properties` configure `app.should-init-postcode-data` to enable/disable initial data import for postcode and coordinates
 * Run `mvn spring-boot:run` to start the application
 
-###Endpoints
+### Endpoints
 
 Calculate distance
 ````
